@@ -1,0 +1,495 @@
+/* -------------------------------------------------------
+📜 Global Stylesheet — Rubic Digital Solutions
+Stack: Next.js + Tailwind + CSS variables
+Propósito:
+- Centralizar colores/fuentes (light/dark).
+- Reutilizar helpers (botones, nav links, etc.).
+- Comentarios claros para mantenimiento.
+------------------------------------------------------- */
+
+/* 1) Tailwind (debe ir arriba) */
+@import "tailwindcss";
+
+/* 2) Design tokens (modo LIGHT por defecto) */
+:root {
+  /* Base UI */
+  --background: #ffffff;      /* Fondo claro */
+  --foreground: #1a1a1a;      /* Texto principal */
+
+  /* Marca (light) */
+  --primary: #d4af37;         /* Dorado */
+  --primary-hover: #b8932e;   /* Dorado oscuro */
+  --on-primary: #1a1a1a;      /* Texto sobre primario */
+
+  /* Navbar */
+  --nav-bg: rgba(255, 255, 255, 0.7);
+  --nav-border: rgba(0, 0, 0, 0.08);
+
+  /* Texto atenuado (enlaces en reposo) */
+  --muted-foreground: rgba(26, 26, 26, 0.7);
+
+  /* Superficie / bordes generales */
+  --surface: #f6f7f9;
+  --border: rgba(0, 0, 0, 0.08);
+
+  /* Tipografías (next/font define variables en <body>) */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  --font-display: var(--font-sans); /* Plus Jakarta si la asignas en layout */
+}
+
+/* 3) Fallback DARK por preferencia del sistema (si JS no corre) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #e6e6e6;
+
+    --primary: #00ff88;       /* Verde neon (dark) */
+    --primary-hover: #00cc6a;
+    --on-primary: #0a0a0a;
+
+    --nav-bg: rgba(10, 10, 10, 0.6);
+    --nav-border: rgba(255, 255, 255, 0.08);
+
+    --muted-foreground: rgba(230, 230, 230, 0.75);
+
+    --surface: #111827;
+    --border: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* 4) Overrides manuales (ThemeToggle pone data-theme en <html>) */
+:root[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --primary: #d4af37;
+  --primary-hover: #b8932e;
+  --on-primary: #1a1a1a;
+  --nav-bg: rgba(255, 255, 255, 0.7);
+  --nav-border: rgba(0, 0, 0, 0.08);
+  --muted-foreground: rgba(26, 26, 26, 0.7);
+  --surface: #f6f7f9;
+  --border: rgba(0, 0, 0, 0.08);
+}
+:root[data-theme="dark"] {
+  --background: #0a0a0a;
+  --foreground: #e6e6e6;
+  --primary: #00ff88;
+  --primary-hover: #00cc6a;
+  --on-primary: #0a0a0a;
+  --nav-bg: rgba(10, 10, 10, 0.6);
+  --nav-border: rgba(255, 255, 255, 0.08);
+  --muted-foreground: rgba(230, 230, 230, 0.75);
+  --surface: #111827;
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+/* 5) (Opcional) Mapear tokens a Tailwind v4 (si migras) */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+}
+
+/* 6) Base global */
+html { scroll-behavior: smooth; }
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* 7) Helpers rápidos */
+.text-brand { color: var(--primary); }
+.bg-brand   { background-color: var(--primary); }
+.border-soft { border-color: var(--nav-border); }
+.bg-surface { background-color: var(--surface); }
+.h-display  { font-family: var(--font-display); letter-spacing: -0.01em; }
+
+/* 8) Botones (no fijar display para que hidden/inline-flex funcionen por breakpoint) */
+.btn-primary {
+  align-items: center;            /* añade inline-flex en JSX si lo necesitas */
+  justify-content: center;
+  padding: 0.375rem 0.75rem;      /* px-3 py-1.5 */
+  border-radius: 0.5rem;          /* rounded-lg */
+  background: var(--primary);
+  color: var(--on-primary);
+  transition: background-color .2s ease, filter .2s ease;
+}
+.btn-primary:hover { background: var(--primary-hover); filter: saturate(1.05); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  padding: 0.5rem 0.875rem; border-radius: 0.5rem;
+  border: 1px solid var(--border); color: var(--foreground);
+  backdrop-filter: blur(6px);
+  transition: border-color .2s ease, background-color .2s ease;
+}
+.btn-ghost:hover { border-color: color-mix(in oklab, var(--foreground) 25%, var(--border)); }
+
+/* 9) Navbar */
+.navbar-header {
+  background-color: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+}
+
+/* Logo de texto (outline sutil) + versión con gradiente de marca */
+.logo-text {
+  font-weight: 800;
+  letter-spacing: .02em;
+  color: var(--foreground);
+  text-shadow: 0 0 0.5px currentColor, 0 0 1px currentColor, 0 0 2px rgba(255,255,255,.15);
+}
+.logo-text:hover { filter: drop-shadow(0 0 6px rgba(255,255,255,.25)); }
+
+.logo-text--brand{
+  background: linear-gradient(90deg, var(--primary), color-mix(in oklab, var(--primary) 65%, var(--foreground)));
+  -webkit-background-clip: text;
+  background-clip:text;
+  color: transparent;
+}
+
+/* Acento puntual para “Solutions” (desktop) */
+.logo-accent { color: var(--primary); }
+
+/* Links del nav con subrayado animado + estado activo */
+.nav-link {
+  color: var(--muted-foreground);
+  text-decoration: none;
+  position: relative;
+  padding: 4px 0;
+  transition: color .2s ease;
+}
+.nav-link:hover { color: var(--foreground); }
+.nav-link::after {
+  content: "";
+  position: absolute; left: 0; bottom: -2px;
+  height: 2px; width: 0%;
+  background: currentColor; opacity: .9;
+  transition: width .2s ease;
+}
+.nav-link:hover::after { width: 100%; }
+.nav-link--active { color: var(--foreground); }
+.nav-link--active::after { width: 100%; background: var(--primary); }
+
+/* 10) Hero visuals (mesh + glow sutil) */
+.bg-hero {
+  background:
+    radial-gradient(1200px 600px at 50% -10%, color-mix(in oklab, var(--primary) 25%, transparent), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,0) 0%, color-mix(in oklab, var(--foreground) 3%, transparent) 100%);
+}
+.hero-glow { position: relative; }
+.hero-glow::after {
+  content: "";
+  position: absolute; inset: -10% -5% 0 -5%;
+  background: radial-gradient(600px 300px at 50% 0%, color-mix(in oklab, var(--primary) 35%, transparent), transparent 60%);
+  filter: blur(30px); opacity: .45; pointer-events: none; z-index: -1;
+}
+
+/* 11) Mobile UX/seguridad */
+html, body { overflow-x: hidden; }        /* evita “saltos” horizontales */
+img, svg, video, canvas {
+  max-width: 100%; height: auto; display: block; /* media responsive segura */
+}
+
+/* 12) Icon buttons (ThemeToggle y Hamburguesa)
+   Nota: no imponemos display aquí; lo controlas en JSX con lg:hidden/inline-flex */
+.icon-btn{
+  align-items:center; justify-content:center;
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 1px solid var(--nav-border);
+  color: var(--foreground);
+  background: color-mix(in oklab, var(--nav-bg) 75%, transparent);
+  transition: border-color .2s ease, background-color .2s ease, transform .06s ease;
+}
+.icon-btn:active { transform: scale(.98); }
+
+.icon-btn.burger .burger-bar {
+  display: block;
+  position: relative;
+  left: 50%;                      /* 📍 centra horizontalmente */
+  transform: translateX(-50%);    /* 📍 corrige el centrado */
+  width: 18px;
+  height: 2px;
+  margin: 2px 0;
+  background: currentColor;
+  border-radius: 2px;
+}
+
+/* 14) Menú móvil como overlay fijo (no empuja el hero) */
+.mobile-overlay{
+  position: fixed; inset: 0;
+  background: color-mix(in oklab, var(--background) 30%, transparent);
+  backdrop-filter: blur(4px);
+  z-index: 40; /* por encima del header */
+}
+.mobile-sheet{
+  position: absolute; top: 56px; /* h-14 del header */
+  left: 0; right: 0;
+  background-color: var(--background);       /* SOLID para legibilidad */
+  border-top: 1px solid var(--nav-border);
+}
+/* tap targets más grandes en el panel móvil */
+.mobile-sheet .nav-link { font-size: 1.125rem; padding: 10px 0; }
+
+/* 15) Botón de cierre “X” centrado al final */
+.close-wrap { display:flex; justify-content:center; padding: 8px 0 12px; }
+.close-btn{
+  position: relative;
+  width: 44px; height: 44px; border-radius: 12px;
+  border: 1px solid var(--nav-border);
+  background: color-mix(in oklab, var(--nav-bg) 85%, var(--background));
+  color: var(--foreground);
+  transition: border-color .2s ease, background-color .2s ease, transform .06s ease;
+}
+.close-btn:active { transform: scale(.98); }
+.close-btn .x-bar{
+  position: absolute; left:50%; top:50%;
+  width: 22px; height: 3px; border-radius: 2px;
+  background: var(--foreground);
+  transform-origin: center;
+}
+.close-btn .x-bar:nth-child(1){ transform: translate(-50%, -50%) rotate(45deg); }
+.close-btn .x-bar:nth-child(2){ transform: translate(-50%, -50%) rotate(-45deg); }
+
+/* 16) Accesibilidad opcional */
+@media (prefers-reduced-motion: reduce) {
+  .icon-btn, .btn-primary, .btn-ghost,
+  .nav-link::after { transition: none !important; }
+}
+/* === Typographic scale (tokens utilitarios) ===
+   Usa: className="h1" / "h2" ... "h6" / "text-body" / "text-small"
+   Cambia con @media para responsive sin repetir en cada componente. */
+
+   .h1 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; font-size: 2.25rem; }
+   .h2 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; font-size: 1.875rem; }
+   .h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; font-size: 1.5rem; }
+   .h4 { font-weight: 600; line-height: 1.3; font-size: 1.25rem; }
+   .h5 { font-weight: 600; line-height: 1.35; font-size: 1.125rem; }
+   .h6 { font-weight: 600; line-height: 1.4; font-size: 1rem; }
+   
+   .text-body  { font-size: 1rem; line-height: 1.65; }
+   .text-small { font-size: .875rem; line-height: 1.5; opacity: .9; }
+   
+   @media (min-width: 768px) {
+     .h1 { font-size: 3.25rem; }
+     .h2 { font-size: 2.25rem; }
+     .h3 { font-size: 1.75rem; }
+   }
+   /* === Icon links (footer/contact) — color + accesibilidad === */
+.icon-link{
+  /* heredan currentColor; estado base un poco atenuado */
+  color: color-mix(in oklab, var(--foreground) 80%, transparent);
+  display:inline-flex; align-items:center; justify-content:center;
+  border: 1px solid var(--nav-border);
+  border-radius: 0.5rem;            /* ~ rounded-lg */
+  padding: 0.5rem;                  /* ~ p-2 */
+  transition:
+    color .18s ease,
+    border-color .18s ease,
+    background-color .18s ease,
+    box-shadow .18s ease,
+    transform .06s ease;
+}
+.icon-link:hover,
+.icon-link:focus-visible{
+  /* usa tu color de marca según tema (dorado/verde) */
+  color: var(--primary);
+  border-color: color-mix(in oklab, var(--primary) 40%, var(--nav-border));
+  background-color: color-mix(in oklab, var(--primary) 10%, transparent);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 20%, transparent);
+}
+.icon-link:active{
+  transform: scale(.98);
+  background-color: color-mix(in oklab, var(--primary) 16%, transparent);
+}
+
+/* Tamaños por defecto de los íconos Lucide dentro de .icon-link */
+.icon-link > .lucide{
+  width: 20px; height: 20px;       /* w-5 h-5 por defecto */
+  /* Mantén grosor constante aunque escales el ícono */
+  stroke-width: 2;
+}
+/* ——— Micro helpers visuales ——— */
+.shadow-ambient {
+  box-shadow:
+    0 0 0 1px var(--nav-border),
+    0 30px 60px -20px rgba(0,0,0,.35);
+}
+.card-hover {
+  transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,.35);
+}
+/* === Projects: Animations & Typewriter === */
+@keyframes spin-slower { from {transform:rotate(0)} to {transform:rotate(360deg)} }
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateX(140px) rotate(0deg); }
+  50% { transform: rotate(180deg) translateX(140px) rotate(-180deg); }
+  100% { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
+}
+@keyframes float-y { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes caret-blink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
+@keyframes shimmer-x { 0%{transform:translateX(-30%)} 100%{transform:translateX(130%)} }
+
+.animate-spin-slower{ animation:spin-slower 46s linear infinite; }
+.animate-orbit      { animation:orbit 12s linear infinite; }
+.animate-float-y    { animation:float-y 6s ease-in-out infinite; }
+.animate-shimmer-x  { animation:shimmer-x 3.5s linear infinite; }
+
+.projects-mesh {
+  background:
+    radial-gradient(900px 420px at 50% -10%, color-mix(in oklab, var(--primary) 28%, transparent), transparent 60%),
+    linear-gradient(180deg, transparent, color-mix(in oklab, var(--foreground) 4%, transparent));
+}
+
+/* Shine diagonal en titulares */
+.headline-shine { position: relative; overflow: hidden; }
+.headline-shine::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,.12) 40%, transparent 80%);
+  transform: translateX(-30%); mix-blend-mode: overlay;
+  animation: shimmer-x 3.5s linear infinite;
+}
+
+/* Cursor de typing */
+.typing-caret::after{
+  content:"|"; display:inline-block; margin-left:2px;
+  animation: caret-blink 1s step-end infinite;
+}
+
+/* Respeto a reduce-motion */
+@media (prefers-reduced-motion: reduce){
+  .animate-spin-slower,.animate-orbit,.animate-float-y,.animate-shimmer-x{ animation:none !important; }
+  .typing-caret::after{ animation:none !important; }
+}
+/* === Projects HERO (malla sutil + anim) === */
+.projects-hero {
+  position: relative;
+  isolation: isolate;
+}
+.projects-hero__bg {
+  position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(900px 420px at 50% -10%, color-mix(in oklab, var(--primary) 26%, transparent), transparent 60%),
+    linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--foreground) 4%, transparent) 100%),
+    /* grid sutil */
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--foreground) 6%, transparent) 0px,
+      color-mix(in oklab, var(--foreground) 6%, transparent) 1px,
+      transparent 1px,
+      transparent 36px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in oklab, var(--foreground) 6%, transparent) 0px,
+      color-mix(in oklab, var(--foreground) 6%, transparent) 1px,
+      transparent 1px,
+      transparent 36px
+    );
+  background-size: auto, auto, 100% 100%, 100% 100%;
+  animation: projectsGridShift 22s linear infinite;
+  opacity: .9;
+}
+@keyframes projectsGridShift {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+  50%{ background-position: 0 0, 0 0, 20px 0, 0 20px; }
+  100%{ background-position: 0 0, 0 0, 0 0, 0 0; }
+}
+
+/* === Typewriter puro CSS (SSR-safe) ===
+   Uso: <span class="typewriter" style="--n: 22">Texto</span>
+   Ajusta --n al número de caracteres del texto (incluye espacios) */
+.typewriter {
+  --t: 2.6s;               /* velocidad total; ajústala si quieres */
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: .08em solid currentColor; /* cursor */
+  width: 0;
+  animation:
+    typing var(--t) steps(var(--n)) 0.35s forwards,
+    caretBlink .9s steps(1) infinite;
+}
+@keyframes typing {
+  from { width: 0 }
+  to   { width: calc(var(--n) * 1ch) }
+}
+@keyframes caretBlink {
+  0%,49% { border-right-color: currentColor }
+  50%,100% { border-right-color: transparent }
+}
+
+/* Respeto a reduce motion */
+@media (prefers-reduced-motion: reduce){
+  .projects-hero__bg { animation: none !important; }
+  .typewriter { animation: none !important; width: auto; border-right: 0; }
+}
+/* HERO Background (ya existente) */
+.projects-hero { position: relative; isolation: isolate; }
+.projects-hero__bg {
+  position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(900px 420px at 50% -10%, color-mix(in oklab, var(--primary) 26%, transparent), transparent 60%),
+    linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--foreground) 4%, transparent) 100%),
+    repeating-linear-gradient(90deg, color-mix(in oklab, var(--foreground) 6%, transparent) 0px, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px, transparent 36px),
+    repeating-linear-gradient(0deg, color-mix(in oklab, var(--foreground) 6%, transparent) 0px, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px, transparent 36px);
+  background-size: auto, auto, 100% 100%, 100% 100%;
+  animation: projectsGridShift 22s linear infinite;
+  opacity: .9;
+}
+@keyframes projectsGridShift {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+  50%{ background-position: 0 0, 0 0, 20px 0, 0 20px; }
+  100%{ background-position: 0 0, 0 0, 0 0, 0 0; }
+}
+
+/* HERO fade-in per word */
+.hero-fade span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 0.6s ease forwards;
+}
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ===== Hero (tokens) ===== */
+:root[data-theme="light"] {
+  /* BG más cálido y viñeta suave para contraste */
+  --hero-bg-start: color-mix(in oklab, var(--primary) 14%, #ffffff);
+  --hero-bg-end:   color-mix(in oklab, var(--background) 96%, transparent);
+  --hero-orbit:    color-mix(in oklab, var(--foreground) 45%, var(--primary) 35%);
+  --hero-spark:    color-mix(in oklab, var(--foreground) 42%, var(--primary) 20%);
+  --hero-vignette: rgba(0, 0, 0, 0.18); /* aumenta legibilidad en light */
+}
+
+:root[data-theme="dark"] {
+  /* BG verdoso + anillos neón, chispas brillantes */
+  --hero-bg-start: color-mix(in oklab, var(--primary) 22%, #000000);
+  --hero-bg-end:   color-mix(in oklab, var(--background) 88%, transparent);
+  --hero-orbit:    color-mix(in oklab, var(--primary) 85%, #00ff88);
+  --hero-spark:    color-mix(in oklab, var(--primary) 85%, #bffff0);
+  --hero-vignette: rgba(0, 0, 0, 0.5);
+}
+
+/* Accesibilidad: si el usuario prefiere menos movimiento, reducimos */
+@media (prefers-reduced-motion: reduce) {
+  .hero-glow { filter: none !important; }
+}
+:root[data-theme="light"] {
+  --portal-bg-start: color-mix(in oklab, var(--primary) 15%, #ffffff 85%);
+  --portal-bg-end:   color-mix(in oklab, #dbeafe 40%, #ffffff 60%);
+}
+
+:root[data-theme="dark"] {
+  --portal-bg-start: color-mix(in oklab, var(--primary) 35%, #000000 65%);
+  --portal-bg-end:   color-mix(in oklab, #0f172a 85%, #000000 15%);
+}
