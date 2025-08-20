@@ -239,7 +239,6 @@ export default function Hero() {
   }, [immersive, isMobile]);
 
   // Autorepeat D-Pad
-  const pressTimer = useRef<number | null>(null);
   const startRepeat = (fn: () => void) => {
     fn();
     stopRepeat();
