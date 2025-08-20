@@ -68,8 +68,7 @@ export default function Navbar() {
       <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between gap-3">
         {/* Marca */}
         <Link href="/" className="logo-text logo-text--brand tracking-tight">
-          <span className="lg:hidden">Rc’s Digital Solutions</span>
-          <span className="hidden lg:inline">
+        <span className="lg:hidden">Rubic’s Digital Solutions</span>          <span className="hidden lg:inline">
             Rubic’s Digital <span className="logo-accent">Solutions</span>
           </span>
         </Link>
