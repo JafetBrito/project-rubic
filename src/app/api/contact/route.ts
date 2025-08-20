@@ -17,11 +17,10 @@ const bucket = new Map<string, number[]>();
 function limited(ip: string) {
   const now = Date.now();
   const hits = (bucket.get(ip) ?? []).filter(t => now - t < WINDOW_MS);
-  if (hits.length >= MAX_REQS) return true;
-  hits.push(now);
-  bucket.set(ip, hits);
-  return false;
-}
+  if (hits.length >= MAX_REQS) {
+    bucket.set(ip, hits); // persistir hits filtrados para limpiar el bucket al límite
+    return true;
+  }
 
 export async function POST(req: Request) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
