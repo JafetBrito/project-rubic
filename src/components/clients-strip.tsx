@@ -1,16 +1,14 @@
-
 // Technology stack strip displaying the core frameworks and tools we use.
 // Icons are stored in /public/techs/* as SVG files.
 
 import Image from "next/image";
 
-
 const TECHS = [
-  { name: "Next.js", src: "/techs/nextjs.svg", w: 48, h: 48 },
-  { name: "React", src: "/techs/react.svg", w: 48, h: 48 },
-  { name: "Tailwind CSS", src: "/techs/tailwindcss.svg", w: 48, h: 48 },
-  { name: "TypeScript", src: "/techs/typescript.svg", w: 48, h: 48 },
-  { name: "Node.js", src: "/techs/nodejs.svg", w: 48, h: 48 },
+  { name: "Next.js", src: "/techs/nextjs.svg", w: 32, h: 32 },
+  { name: "React", src: "/techs/react.svg", w: 32, h: 32 },
+  { name: "Tailwind CSS", src: "/techs/tailwindcss.svg", w: 32, h: 32 },
+  { name: "TypeScript", src: "/techs/typescript.svg", w: 32, h: 32 },
+  { name: "Node.js", src: "/techs/nodejs.svg", w: 32, h: 32 },
 ];
 
 export default function ClientsStrip() {
@@ -21,7 +19,7 @@ export default function ClientsStrip() {
           We work with technologies like
         </p>
         <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 items-center">
-          
+
           {TECHS.map((t) => (
             <div
               key={t.name}
@@ -32,7 +30,7 @@ export default function ClientsStrip() {
                 alt={t.name}
                 width={t.w}
                 height={t.h}
-                className="h-10 w-auto"
+                className="h-8 w-auto filter grayscale hover:grayscale-0 focus-visible:grayscale-0 transition"
               />
             </div>
           ))}
