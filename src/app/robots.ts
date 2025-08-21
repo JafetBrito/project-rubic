@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "",
     },
-    sitemap: "https://rubicdigitalsolutions.com/sitemap.xml",
+    sitemap: "https://rubicsdigitalsolutions.ca/sitemap.xml",
   };
 }

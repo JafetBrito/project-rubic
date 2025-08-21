@@ -40,7 +40,7 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-displa
 export const metadata: Metadata = {
   title: "Rubic Digital Solutions",
   description: "Fast, secure websites with high-impact SEO.",
-  metadataBase: new URL("https://www.example.com"),
+  metadataBase: new URL("https://rubicsdigitalsolutions.ca/"),
   alternates: { canonical: "/" },
   icons: {
     icon: [
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Rubic Digital Solutions",
     description: "Fast, secure websites with high-impact SEO.",
-    url: "https://www.example.com",
+    url: "https://rubicsdigitalsolutions.ca/",
     siteName: "Rubic Digital Solutions",
     images: [{ url: "/og.jpg", width: 1200, height: 630 }],
     locale: "en_US",

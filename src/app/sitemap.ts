@@ -3,37 +3,37 @@ import { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: "https://rubicdigitalsolutions.com",
+      url: "https://rubicsdigitalsolutions.ca",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
     },
     {
-      url: "https://rubicdigitalsolutions.com/services",
+      url: "https://rubicsdigitalsolutions.ca/services",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: "https://rubicdigitalsolutions.com/projects",
+      url: "https://rubicsdigitalsolutions.ca/proyects",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: "https://rubicdigitalsolutions.com/blog",
+      url: "https://rubicsdigitalsolutions.ca/blog",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
-      url: "https://rubicdigitalsolutions.com/about",
+      url: "https://rubicsdigitalsolutions.ca/about",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
-      url: "https://rubicdigitalsolutions.com/contact",
+      url: "https://rubicsdigitalsolutions.ca/contact",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
