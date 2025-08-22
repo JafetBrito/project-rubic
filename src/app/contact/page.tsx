@@ -56,12 +56,13 @@ export const metadata = {
     "Tell us about your project. We reply fast and in your language. Secure by design.",
 };
 
-export default function ContactPage({
+export default async function Page({
   searchParams,
 }: {
-  searchParams?: { status?: string };
+  searchParams?: Promise<Record<string, string | string[]>>;
 }) {
-  const status = searchParams?.status;
+  const sp = (await searchParams) ?? {};
+  const status = Array.isArray(sp.status) ? sp.status[0] : sp.status;
 
   return (
     <>

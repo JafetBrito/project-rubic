@@ -21,6 +21,9 @@ function limited(ip: string) {
     bucket.set(ip, hits); // persistir hits filtrados para limpiar el bucket al límite
     return true;
   }
+    bucket.set(ip, [...hits, now]);
+  return false;
+}
 
 export async function POST(req: Request) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
