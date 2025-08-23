@@ -2,7 +2,7 @@
 // Muestra año, nombre del sitio, links útiles y redes.
 import Link from "next/link";
 import Container from "@/components/ui/container";
-import { Instagram, Twitter, Facebook, Github, Linkedin } from "lucide-react";
+import { Instagram, Facebook, Github, Linkedin } from "lucide-react";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -17,7 +17,7 @@ export default function Footer() {
               Rubic’s Digital <span className="logo-accent">Solutions</span>
             </div>
             <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              Fast, secure websites with high-impact SEO.
+              Cybersecurity, Software, Websites, Apps and SEO—engineered for security, speed, and growth.
             </p>
           </div>
 
@@ -34,7 +34,7 @@ export default function Footer() {
 
           {/* Social / Legal */}
           <div className="sm:text-right">
-            {/* Íconos sociales (cambian de color con hover/focus/active según tema) */}
+            {/* Redes (sin Twitter/X) */}
             <div className="flex sm:justify-end gap-3">
               <a
                 href="https://instagram.com/tu_cuenta"
@@ -48,18 +48,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://x.com/tu_cuenta"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Twitter / X"
-                title="Twitter / X"
-                className="icon-link"
-              >
-                <Twitter className="lucide" aria-hidden />
-              </a>
-
-              <a
-                href="https://facebook.com/tu_cuenta"
+                href="https://www.facebook.com/people/Rubics-Digital-Solutions/61572999008268/?locale=es_LA"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
@@ -69,7 +58,7 @@ export default function Footer() {
                 <Facebook className="lucide" aria-hidden />
               </a>
 
-              {/* Opcionales */}
+              {/* Opcionales: dejar visibles o comenta si aún no tienes perfiles */}
               <a
                 href="https://github.com/tu_org"
                 target="_blank"
@@ -97,6 +86,7 @@ export default function Footer() {
               © {year} Rubic’s Digital Solutions. All rights reserved.
             </p>
             <p className="mt-1 text-xs">
+              {/* Privacy ya existe; Terms quedará listo para cuando agregues la página */}
               <Link className="nav-link" href="/privacy">Privacy</Link>
               {" · "}
               <Link className="nav-link" href="/terms">Terms</Link>

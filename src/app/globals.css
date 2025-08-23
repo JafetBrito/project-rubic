@@ -1,171 +1,169 @@
 /* -------------------------------------------------------
-📜 Global Stylesheet — Rubic’s Digital Solutions (v2)
+📜 Global Stylesheet — Rubic’s Digital Solutions (v3.1)
 Stack: Next.js + Tailwind + CSS variables
-Cambios clave:
-- Paleta LIGHT revisada (mejor contraste, azul de marca).
-- Navbar sticky y por encima del hero.
-- Imágenes protegidas de overlays y hover (card-media).
-- Hero y Projects con viñeta/gradientes sin opacidad global.
+Cambios:
+- FIX: botón secundario/ghost visible en LIGHT y DARK.
+- Mantengo forma/tamaño original de botones (variants = color-only).
+- Navbar sticky con z-index alto. Media “blindada”.
 ------------------------------------------------------- */
 
 /* 1) Tailwind (debe ir arriba) */
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Tailwind v4: variante dark por clase en <html class="dark"> */
 @custom-variant dark (&:is(.dark *));
 
-/* 2) Design tokens (modo LIGHT por defecto) */
+/* 2) Design tokens — LIGHT por defecto */
 :root {
-  /* Base UI */         /* leve gris para contraste */
-  --surface: #ffffff;            /* tarjetas blancas */         /* texto principal (muy oscuro) */
+  /* Base UI */
+  --background: #f7f8fa;
+  --surface: #ffffff;
+  --foreground: #0b1220; /* casi negro para buen contraste */
+  --muted-foreground: #475569; /* slate-600 */
+  --border: rgba(15, 23, 42, 0.10); /* slate-900 @10% */
 
-  /* Marca (light) — azul consistente */
-  --primary: oklch(0.205 0 0);            /* blue-600 */
-  --primary-hover: #1d4ed8;      /* blue-700 */
-  --on-primary: #ffffff;         /* texto sobre primario */
+  /* Marca (azul) */
+  --primary: #2563eb;        /* blue-600 */
+  --primary-hover: #1d4ed8;  /* blue-700 */
+  --on-primary: #ffffff;
 
   /* Navbar */
   --nav-bg: rgba(255,255,255,0.92);
-  --nav-border: rgba(2, 6, 23, 0.08);  /* slate-950 @ 8% */
+  --nav-border: rgba(2, 6, 23, 0.08);
 
-  /* Texto atenuado */
-  --muted-foreground: oklch(0.556 0 0);        /* slate-600 */
+  /* Controles */
+  --input: #e5e7eb;
+  --ring: rgba(37, 99, 235, 0.35);
 
-  /* Bordes generales */
-  --border: oklch(0.922 0 0);    /* slate-900 @ 10% */
-
-  /* Tipografías (si no asignas con next/font) */
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-  --font-display: var(--font-sans);
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  /* Tokens de apoyo */
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+  --secondary: #eef2ff;                 /* indigo-50 */
+  --secondary-foreground: #222;
+  --muted: #f2f4f7;
+  --accent: #eef2ff;
+  --accent-foreground: #1f2937;
   --destructive: oklch(0.577 0.245 27.325);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+
+  /* Charts (opcionales) */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
 
-/* 3) Fallback DARK por preferencia del sistema (si JS no corre) */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface: #111827;
+  /* Sidebar (si lo usas) */
+  --sidebar: #fbfcff;
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--on-primary);
+  --sidebar-accent: #eef2ff;
+  --sidebar-accent-foreground: #111827;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: var(--ring);
 
-    --primary: #00ff88;       /* Verde neon (dark) */
-    --primary-hover: #00cc6a;
-    --on-primary: #0a0a0a;
+  /* Tipografía/radius */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", sans-serif;
+  --font-display: var(--font-sans);
+  --radius: 10px;
 
-    --nav-bg: rgba(10, 10, 10, 0.6);
-    --nav-border: rgba(255, 255, 255, 0.08);
-
-    --muted-foreground: rgba(230, 230, 230, 0.75);
-
-    --border: rgba(255, 255, 255, 0.08);
-  }
-}
-
-/* 4) Overrides manuales via data-theme */
-:root[data-theme="light"] {
-  --background: #f7f8fa;
-  --surface: #ffffff;
-  --foreground: #0b1220;
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --on-primary: #ffffff;
-  --nav-bg: rgba(255,255,255,0.92);
-  --nav-border: rgba(2, 6, 23, 0.08);
-  --muted-foreground: #475569;
-  --border: rgba(15, 23, 42, 0.10);
-
-  /* HERO tokens más contrastados */
-  --hero-bg-start: color-mix(in oklab, var(--primary) 18%, #ffffff);
+  /* HERO (light) */
+  --hero-bg-start: color-mix(in oklab, var(--primary) 16%, #ffffff);
   --hero-bg-end:   #ffffff;
-  --hero-orbit:    color-mix(in oklab, var(--foreground) 55%, var(--primary) 30%);
-  --hero-spark:    color-mix(in oklab, var(--foreground) 55%, var(--primary) 20%);
-  --hero-vignette: rgba(0, 0, 0, 0.22);
+  --hero-orbit:    color-mix(in oklab, var(--foreground) 50%, var(--primary) 30%);
+  --hero-spark:    color-mix(in oklab, var(--foreground) 50%, var(--primary) 20%);
+  --hero-vignette: rgba(0,0,0,.20);
 
-  /* Portal (si lo usas) */
-  --portal-bg-start: color-mix(in oklab, var(--primary) 15%, #ffffff 85%);
-  --portal-bg-end:   color-mix(in oklab, #dbeafe 40%, #ffffff 60%);
+  /* Outline/ghost (light) — FIX del 2º botón */
+  --btn-ghost-bg: color-mix(in oklab, #ffffff 90%, var(--foreground) 10%);
+  --btn-ghost-border: color-mix(in oklab, var(--foreground) 22%, #ffffff 78%);
+  --btn-ghost-bg-hover: color-mix(in oklab, #ffffff 80%, var(--foreground) 20%);
+  --btn-ghost-border-hover: color-mix(in oklab, var(--foreground) 34%, #ffffff 66%);
 }
-:root[data-theme="dark"] {
+
+/* 3) DARK (override por data-theme o clase .dark) */
+:root[data-theme="dark"],
+.dark :root {
   --background: #0a0a0a;
   --surface: #111827;
   --foreground: #e6e6e6;
-  --primary: #00ff88;
+  --muted-foreground: rgba(230,230,230,0.75);
+  --border: rgba(255,255,255,0.08);
+
+  --primary: #00ff88;        /* verde neon */
   --primary-hover: #00cc6a;
   --on-primary: #0a0a0a;
-  --nav-bg: rgba(10, 10, 10, 0.6);
-  --nav-border: rgba(255, 255, 255, 0.08);
-  --muted-foreground: rgba(230, 230, 230, 0.75);
-  --border: rgba(255, 255, 255, 0.08);
 
-  --hero-bg-start: color-mix(in oklab, var(--primary) 22%, #000000);
+  --nav-bg: rgba(10,10,10,0.6);
+  --nav-border: rgba(255,255,255,0.08);
+
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+
+  --secondary: #0f172a;
+  --secondary-foreground: #e5e7eb;
+  --muted: #0f172a;
+  --accent: #0f172a;
+  --accent-foreground: #e6e6e6;
+
+  /* HERO (dark) */
+  --hero-bg-start: color-mix(in oklab, var(--primary) 22%, #000);
   --hero-bg-end:   color-mix(in oklab, var(--background) 88%, transparent);
   --hero-orbit:    color-mix(in oklab, var(--primary) 85%, #00ff88);
   --hero-spark:    color-mix(in oklab, var(--primary) 85%, #bffff0);
-  --hero-vignette: rgba(0, 0, 0, 0.5);
+  --hero-vignette: rgba(0,0,0,.5);
 
-  --portal-bg-start: color-mix(in oklab, var(--primary) 35%, #000000 65%);
-  --portal-bg-end:   color-mix(in oklab, #0f172a 85%, #000000 15%);
+  /* Outline/ghost (dark) */
+  --btn-ghost-bg: color-mix(in oklab, #0a0a0a 82%, #ffffff 18%);
+  --btn-ghost-border: color-mix(in oklab, #ffffff 22%, #0a0a0a 78%);
+  --btn-ghost-bg-hover: color-mix(in oklab, #0a0a0a 76%, #ffffff 24%);
+  --btn-ghost-border-hover: color-mix(in oklab, #ffffff 32%, #0a0a0a 68%);
 }
 
-/* 5) (Opcional) Mapear tokens a Tailwind v4 inline */
+/* 4) Fallback si el usuario prefiere dark y no hay JS/atributos */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+  }
+}
+
+/* 5) Mapear tokens a Tailwind v4 (inline theme) */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
+
   --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
   --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--on-primary);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -174,8 +172,12 @@ Cambios clave:
 
 /* 6) Base global */
 html { scroll-behavior: smooth; }
-body {
-  font-family: var(--font-sans);
+body { font-family: var(--font-sans); }
+html, body { overflow-x: hidden; }
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  body { @apply bg-background text-foreground; }
 }
 
 /* 7) Helpers rápidos */
@@ -184,31 +186,11 @@ body {
 .border-soft{ border-color: var(--border); }
 .bg-surface { background-color: var(--surface); }
 .h-display  { font-family: var(--font-display); letter-spacing: -0.01em; }
+.logo-accent{ color: var(--primary); }
 
-/* 8) Botones */
-.btn-primary{
-  align-items:center; justify-content:center;
-  padding: .375rem .75rem; border-radius: .5rem;
-  background: var(--primary); color: var(--on-primary);
-  transition: background-color .2s ease, filter .2s ease, box-shadow .2s ease;
-  box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 8px 16px -8px rgba(37,99,235,.35);
-}
-.btn-primary:hover{ background: var(--primary-hover); filter: saturate(1.05); }
-
-.btn-ghost{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding: .5rem .875rem; border-radius: .5rem;
-  border: 1px solid var(--border); color: var(--foreground);
-  backdrop-filter: blur(6px);
-  transition: border-color .2s ease, background-color .2s ease;
-}
-.btn-ghost:hover{
-  border-color: color-mix(in oklab, var(--foreground) 20%, var(--border));
-}
-
-/* 9) Navbar */
+/* 8) Navbar */
 .navbar-header{
-  position: sticky; top: 0; z-index: 50;
+  position: sticky; top: 0; z-index: 60;                /* z alto */
   background-color: var(--nav-bg);
   border-bottom: 1px solid var(--nav-border);
   backdrop-filter: saturate(1.2) blur(6px);
@@ -222,8 +204,6 @@ body {
   background: linear-gradient(90deg, var(--primary), color-mix(in oklab, var(--primary) 65%, var(--foreground)));
   -webkit-background-clip:text; background-clip:text; color:transparent;
 }
-.logo-accent{ color: var(--primary); }
-
 .nav-link{
   color: color-mix(in oklab, var(--foreground) 78%, transparent);
   text-decoration:none; position:relative; padding:4px 0;
@@ -238,26 +218,58 @@ body {
 .nav-link--active{ color: var(--foreground); }
 .nav-link--active::after{ width:100%; background: var(--primary); }
 
-/* 10) Hero visuals (mesh + glow sutil) */
-.bg-hero{
-  background:
-    radial-gradient(1200px 600px at 50% -10%, color-mix(in oklab, var(--primary) 24%, transparent), transparent 60%),
-    linear-gradient(180deg, rgba(0,0,0,0) 0%, color-mix(in oklab, var(--foreground) 6%, transparent) 100%);
+/* 9) Botones (accesibles) */
+/* Base opcional; úsala si en tu HTML pones class="btn btn-primary" */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  gap:.5rem; font-weight:600; line-height:1;
+  transition: all .2s ease;
 }
-.hero-glow{ position:relative; }
-.hero-glow::after{
-  content:""; position:absolute; inset:-10% -5% 0 -5%;
-  background: radial-gradient(600px 300px at 50% 0%, color-mix(in oklab, var(--primary) 35%, transparent), transparent 60%);
-  filter: blur(30px); opacity:.45; pointer-events:none; z-index:-1;
-}
-
-/* 11) Mobile UX/seguridad */
-html, body { overflow-x: hidden; }
-img, svg, video, canvas {
-  max-width:100%; height:auto; display:block;
+/* Para focus visible coherente en todas las variantes */
+.btn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring);
 }
 
-/* 12) Icon buttons */
+/* Variantes COLOR-ONLY -> NO cambian tu padding/radius (se respetan del HTML o clases previas) */
+.btn-primary{
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 1px solid color-mix(in oklab, var(--primary) 55%, transparent);
+  box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 8px 16px -8px rgba(37,99,235,.35);
+  transition: background-color .2s, border-color .2s, filter .2s;
+}
+.btn-primary:hover{
+  background: var(--primary-hover);
+  filter: saturate(1.05);
+  border-color: color-mix(in oklab, var(--primary-hover) 65%, transparent);
+}
+
+.btn-ghost{ /* FIX principal: visible en LIGHT y DARK */
+  background: var(--btn-ghost-bg);
+  color: var(--foreground);
+  border: 1.5px solid var(--btn-ghost-border);
+  backdrop-filter: blur(6px);
+  transition: background-color .2s, border-color .2s, color .2s;
+}
+.btn-ghost:hover{
+  background: var(--btn-ghost-bg-hover);
+  border-color: var(--btn-ghost-border-hover);
+}
+
+/* Variante secundaria opcional (sutil) */
+.btn-secondary{
+  background: color-mix(in oklab, var(--primary) 12%, #ffffff 88%);
+  color: color-mix(in oklab, var(--foreground) 85%, #000);
+  border: 1px solid color-mix(in oklab, var(--primary) 30%, var(--border));
+}
+.dark .btn-secondary{
+  background: color-mix(in oklab, var(--primary) 20%, #0a0a0a 80%);
+  color: var(--foreground);
+  border-color: color-mix(in oklab, var(--primary) 40%, var(--nav-border));
+}
+
+/* Botones/icon (no cambia tamaño/forma) */
 .icon-btn{
   align-items:center; justify-content:center;
   width:36px; height:36px; border-radius:10px;
@@ -271,9 +283,33 @@ img, svg, video, canvas {
   width:18px; height:2px; margin:2px 0; background:currentColor; border-radius:2px;
 }
 
-/* 13) Menú móvil */
+/* 10) Hero visuals (mesh + glow sutil) */
+.bg-hero{
+  background:
+    radial-gradient(1200px 600px at 50% -10%, color-mix(in oklab, var(--primary) 22%, transparent), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,0) 0%, color-mix(in oklab, var(--foreground) 6%, transparent) 100%);
+}
+.hero-glow{ position:relative; }
+.hero-glow::after{
+  content:""; position:absolute; inset:-10% -5% 0 -5%;
+  background: radial-gradient(600px 300px at 50% 0%, color-mix(in oklab, var(--primary) 35%, transparent), transparent 60%);
+  filter: blur(30px); opacity:.45; pointer-events:none; z-index:-1;
+}
+
+/* 11) Imágenes y media: sin mezclas/filters heredados */
+img, svg, video, canvas { max-width:100%; height:auto; display:block; }
+.card-media{ position:relative; isolation:isolate; }
+.card-media img, .card-media video, .card-media canvas{
+  display:block; width:100%; height:auto; object-fit:cover; border-radius:inherit;
+  position:relative; z-index:1;
+  mix-blend-mode: normal !important;
+  filter:none !important;
+  opacity:1 !important;
+}
+
+/* 12) Menú móvil */
 .mobile-overlay{
-  position:fixed; inset:0; z-index:40;
+  position:fixed; inset:0; z-index:55;
   background: color-mix(in oklab, var(--background) 30%, transparent);
   backdrop-filter: blur(4px);
 }
@@ -300,28 +336,7 @@ img, svg, video, canvas {
 .close-btn .x-bar:nth-child(1){ transform: translate(-50%,-50%) rotate(45deg); }
 .close-btn .x-bar:nth-child(2){ transform: translate(-50%,-50%) rotate(-45deg); }
 
-/* 14) Accesibilidad */
-@media (prefers-reduced-motion: reduce){
-  .icon-btn, .btn-primary, .btn-ghost, .nav-link::after { transition: none !important; }
-}
-
-/* === Tipografía utilitaria === */
-.h1 { font-family: var(--font-display); font-weight:700; letter-spacing:-.02em; line-height:1.1;  font-size:2.25rem; }
-.h2 { font-family: var(--font-display); font-weight:700; letter-spacing:-.02em; line-height:1.15; font-size:1.875rem; }
-.h3 { font-family: var(--font-display); font-weight:600; letter-spacing:-.01em; line-height:1.2;  font-size:1.5rem; }
-.h4 { font-weight:600; line-height:1.3;  font-size:1.25rem; }
-.h5 { font-weight:600; line-height:1.35; font-size:1.125rem; }
-.h6 { font-weight:600; line-height:1.4;  font-size:1rem; }
-.text-body  { font-size:1rem;   line-height:1.65; }
-.text-small { font-size:.875rem; line-height:1.5; opacity:.9; }
-
-@media (min-width:768px){
-  .h1 { font-size:3.25rem; }
-  .h2 { font-size:2.25rem; }
-  .h3 { font-size:1.75rem; }
-}
-
-/* === Icon links (footer/contact) === */
+/* 13) Icon links (footer/contact) */
 .icon-link{
   color: color-mix(in oklab, var(--foreground) 80%, transparent);
   display:inline-flex; align-items:center; justify-content:center;
@@ -338,13 +353,13 @@ img, svg, video, canvas {
 .icon-link:active{ transform: scale(.98); background-color: color-mix(in oklab, var(--primary) 16%, transparent); }
 .icon-link > .lucide{ width:20px; height:20px; stroke-width:2; }
 
-/* ——— Micro helpers visuales ——— */
+/* 14) Sombras y hover de tarjetas */
 .shadow-ambient{
   box-shadow: 0 0 0 1px var(--nav-border), 0 30px 60px -20px rgba(0,0,0,.35);
 }
 .card-hover{
   transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease, border-color .25s ease;
-  background-color: transparent; /* NO tinte sobre media */
+  background-color: transparent;
 }
 .card-hover:hover{
   transform: translateY(-2px);
@@ -352,17 +367,22 @@ img, svg, video, canvas {
   border-color: color-mix(in oklab, var(--foreground) 16%, var(--nav-border));
 }
 
-/* === Protecciones para imágenes (clave del fix) === */
-.card-media{ position:relative; isolation:isolate; }
-.card-media img, .card-media video, .card-media canvas{
-  display:block; width:100%; height:auto; object-fit:cover; border-radius:inherit;
-  position:relative; z-index:1;          /* por encima de decorativos */
-  mix-blend-mode: normal !important;
-  filter:none !important;
-  opacity:1 !important;
+/* 15) Tipografía utilitaria */
+.h1 { font-family: var(--font-display); font-weight:700; letter-spacing:-.02em; line-height:1.1;  font-size:2.25rem; }
+.h2 { font-family: var(--font-display); font-weight:700; letter-spacing:-.02em; line-height:1.15; font-size:1.875rem; }
+.h3 { font-family: var(--font-display); font-weight:600; letter-spacing:-.01em; line-height:1.2;  font-size:1.5rem; }
+.h4 { font-weight:600; line-height:1.3;  font-size:1.25rem; }
+.h5 { font-weight:600; line-height:1.35; font-size:1.125rem; }
+.h6 { font-weight:600; line-height:1.4;  font-size:1rem; }
+.text-body  { font-size:1rem;   line-height:1.65; }
+.text-small { font-size:.875rem; line-height:1.5; opacity:.9; }
+@media (min-width:768px){
+  .h1 { font-size:3.25rem; }
+  .h2 { font-size:2.25rem; }
+  .h3 { font-size:1.75rem; }
 }
 
-/* === Projects: Animations & Typewriter === */
+/* 16) Animaciones & efectos */
 @keyframes spin-slower { from {transform:rotate(0)} to {transform:rotate(360deg)} }
 @keyframes orbit {
   0% { transform: rotate(0deg) translateX(140px) rotate(0deg); }
@@ -372,19 +392,11 @@ img, svg, video, canvas {
 @keyframes float-y { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 @keyframes caret-blink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
 @keyframes shimmer-x { 0%{transform:translateX(-30%)} 100%{transform:translateX(130%)} }
-
 .animate-spin-slower{ animation:spin-slower 46s linear infinite; }
 .animate-orbit      { animation:orbit 12s linear infinite; }
 .animate-float-y    { animation:float-y 6s ease-in-out infinite; }
 .animate-shimmer-x  { animation:shimmer-x 3.5s linear infinite; }
 
-.projects-mesh{
-  background:
-    radial-gradient(900px 420px at 50% -10%, color-mix(in oklab, var(--primary) 28%, transparent), transparent 60%),
-    linear-gradient(180deg, transparent, color-mix(in oklab, var(--foreground) 4%, transparent));
-}
-
-/* Shine diagonal en titulares */
 .headline-shine{ position:relative; overflow:hidden; }
 .headline-shine::after{
   content:""; position:absolute; inset:0; pointer-events:none;
@@ -392,20 +404,17 @@ img, svg, video, canvas {
   transform: translateX(-30%); mix-blend-mode: overlay;
   animation: shimmer-x 3.5s linear infinite;
 }
-
-/* Cursor de typing */
 .typing-caret::after{
   content:"|"; display:inline-block; margin-left:2px;
   animation: caret-blink 1s step-end infinite;
 }
 
-/* Respeto a reduce-motion */
-@media (prefers-reduced-motion: reduce){
-  .animate-spin-slower,.animate-orbit,.animate-float-y,.animate-shimmer-x{ animation:none !important; }
-  .typing-caret::after{ animation:none !important; }
+/* 17) Projects HERO (malla sutil + anim) */
+.projects-mesh{
+  background:
+    radial-gradient(900px 420px at 50% -10%, color-mix(in oklab, var(--primary) 26%, transparent), transparent 60%),
+    linear-gradient(180deg, transparent, color-mix(in oklab, var(--foreground) 4%, transparent));
 }
-
-/* === Projects HERO (malla sutil + anim) === */
 .projects-hero{ position:relative; isolation:isolate; }
 .projects-hero__bg{
   position:absolute; inset:0; z-index:-1;
@@ -428,7 +437,7 @@ img, svg, video, canvas {
     );
   background-size: auto, auto, 100% 100%, 100% 100%;
   animation: projectsGridShift 22s linear infinite;
-  opacity:.9;              /* en el BG, no en el contenedor */
+  opacity:.9;
 }
 @keyframes projectsGridShift{
   0% { background-position: 0 0, 0 0, 0 0, 0 0; }
@@ -436,52 +445,9 @@ img, svg, video, canvas {
   100%{ background-position: 0 0, 0 0, 0 0, 0 0; }
 }
 
-/* HERO fade-in per word */
-.hero-fade span{
-  display:inline-block; opacity:0; transform: translateY(12px);
-  animation: fadeUp .6s ease forwards;
-}
-@keyframes fadeUp{ to{ opacity:1; transform: translateY(0); } }
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+/* 18) Accesibilidad: reduce motion */
+@media (prefers-reduced-motion: reduce){
+  .icon-btn, .btn, .btn-primary, .btn-ghost, .nav-link::after { transition: none !important; }
+  .animate-spin-slower,.animate-orbit,.animate-float-y,.animate-shimmer-x{ animation:none !important; }
+  .typing-caret::after{ animation:none !important; }
 }

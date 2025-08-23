@@ -181,7 +181,7 @@ export default function Hero() {
                 </h1>
 
                 <p className="mt-3 text-base md:text-lg opacity-90">
-                  Fast, secure websites with high-impact SEO.
+                Cybersecurity, Software, Websites, Apps and SEO—engineered for security, speed, and growth.
                 </p>
 
                 <div className="mt-6 flex items-center justify-center gap-3">
@@ -195,12 +195,11 @@ export default function Hero() {
 
                 <div className="mt-4 text-xs md:text-sm opacity-80">
                   <a
-                    href="/projects"
+                    href="/mission"
                     className="underline underline-offset-4 hover:no-underline pointer-events-auto text-white"
                   >
-                    Core Web Vitals
+                    Building a Safer Digital World
                   </a>{" "}
-                  • App-Ready • Secure by Design
                 </div>
               </motion.div>
             )}

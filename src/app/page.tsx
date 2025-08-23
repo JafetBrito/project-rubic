@@ -1,10 +1,13 @@
+// src/app/page.tsx
 import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
-import ClientsStrip from "@/components/clients-strip";
-import Showreel from "@/components/showreel";
-import ServicesShowcase from "@/components/services-showcase";
-import FloatingCTA from "@/components/floating-cta";
 import Footer from "@/components/footer";
+
+/**
+ * Home — minimal
+ * - Only Navbar, Hero, Footer
+ * - No extra sections
+ */
 
 export default function Home() {
   return (
@@ -12,12 +15,8 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <ClientsStrip />
-        <Showreel />
-        <ServicesShowcase />
-        <FloatingCTA />
-        <Footer />
       </main>
+      <Footer />
     </>
   );
 }

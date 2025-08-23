@@ -1,15 +1,12 @@
 "use client";
 
 /*
-🌓 ThemeToggle (Light/Dark)
-- Qué hace: alterna el tema de color entre claro y oscuro.
-- Cómo lo hace: guarda la preferencia en localStorage y pone `data-theme` en <html>.
-- Por qué es importante: permite a la persona usuaria elegir en cualquier dispositivo,
-  y evitamos depender solo de la preferencia del sistema.
+🌗 ThemeToggle (Light/Dark) — iOS style switch
+- Replaces emoji button with a modern slider toggle.
+- Keeps same logic: save theme in localStorage, set data-theme on <html>.
 */
 
 import { useEffect, useState } from "react";
-
 
 type Theme = "light" | "dark";
 
@@ -21,7 +18,7 @@ function getSystemTheme(): Theme {
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>("light");
 
-  // Al montar: leer preferencia guardada o usar la del sistema
+  // On mount: load saved or system preference
   useEffect(() => {
     const saved = (typeof window !== "undefined" && localStorage.getItem("theme")) as Theme | null;
     const initial = saved ?? getSystemTheme();
@@ -41,11 +38,21 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      className="rounded-lg px-3 py-1.5 border border-white/10 hover:border-white/20 text-sm"
-      title="Toggle theme"
+      className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none 
+                 border border-soft bg-surface"
     >
-      {/* Emojis en texto: no afectan el código */}
-      {theme === "dark" ? "☀️ " : "🌙 "}
+      {/* Track background (light vs dark) */}
+      <span
+        className={`absolute inset-0 rounded-full transition-colors duration-300 ${
+          theme === "dark" ? "bg-gray-700" : "bg-gray-300"
+        }`}
+      />
+      {/* Thumb */}
+      <span
+        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
+          theme === "dark" ? "translate-x-6" : "translate-x-1"
+        }`}
+      />
     </button>
   );
 }
