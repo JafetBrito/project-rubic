@@ -1,7 +1,7 @@
 // src/app/blog/sections/Controls.tsx
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Search as SearchIcon, Filter, SortAsc, Tag } from "lucide-react";
 import { CATEGORIES, TAGS } from "../_data";
 
@@ -12,26 +12,21 @@ export type ControlsState = {
   sortBy: "Newest" | "Oldest" | "Title";
 };
 
-export function Controls(props?: {
-  onChange?: (state: ControlsState) => void;
+export function Controls({
+  value,
+  onChange,
+}: {
+  value: ControlsState;
+  onChange: (s: ControlsState) => void;
 }) {
-  const [state, setState] = useState<ControlsState>({
-    query: "",
-    category: "All",
-    tag: "All",
-    sortBy: "Newest",
-  });
-
   const tagOptions = useMemo(() => ["All", ...TAGS], []);
 
-  function update<K extends keyof ControlsState>(key: K, value: ControlsState[K]) {
-    const next = { ...state, [key]: value };
-    setState(next);
-    props?.onChange?.(next);
+  function update<K extends keyof ControlsState>(k: K, v: ControlsState[K]) {
+    onChange({ ...value, [k]: v });
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-6 pt-2 pb-6">
+    <section className="mx-auto max-w-6xl px-6 py-6">
       <div className="grid lg:grid-cols-12 gap-3 items-center">
         {/* Search */}
         <div className="lg:col-span-5">
@@ -40,12 +35,12 @@ export function Controls(props?: {
             <SearchIcon className="w-4 h-4" />
             <input
               id="blog-search"
-              value={state.query}
+              value={value.query}
               onChange={(e) => update("query", e.target.value)}
               placeholder="Search by title, excerpt, or tag…"
               className="w-full bg-transparent outline-none text-sm"
             />
-            {state.query && (
+            {value.query && (
               <button onClick={() => update("query", "")} className="text-xs underline underline-offset-2">
                 Clear
               </button>
@@ -59,7 +54,7 @@ export function Controls(props?: {
             <Filter className="w-4 h-4" />
             <select
               className="w-full px-3 py-2 rounded-xl border border-soft bg-[color-mix(in_oklab,var(--background)_94%,transparent)] text-sm"
-              value={state.category}
+              value={value.category}
               onChange={(e) => update("category", e.target.value as any)}
             >
               {["All", ...CATEGORIES].map((c) => (
@@ -75,7 +70,7 @@ export function Controls(props?: {
             <Tag className="w-4 h-4" />
             <select
               className="w-full px-3 py-2 rounded-xl border border-soft bg-[color-mix(in_oklab,var(--background)_94%,transparent)] text-sm"
-              value={state.tag}
+              value={value.tag}
               onChange={(e) => update("tag", e.target.value)}
             >
               {tagOptions.map((t) => (
@@ -91,7 +86,7 @@ export function Controls(props?: {
             <SortAsc className="w-4 h-4" />
             <select
               className="w-full px-3 py-2 rounded-xl border border-soft bg-[color-mix(in_oklab,var(--background)_94%,transparent)] text-sm"
-              value={state.sortBy}
+              value={value.sortBy}
               onChange={(e) => update("sortBy", e.target.value as any)}
             >
               {["Newest", "Oldest", "Title"].map((s) => (

@@ -1,7 +1,7 @@
 // src/app/blog/sections/PostsGrid.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { POSTS } from "../_data";
 import { PostCard } from "../_components";
 import type { ControlsState } from "./Controls";
@@ -10,23 +10,7 @@ function norm(s: string) {
   return s.toLowerCase().normalize("NFKD");
 }
 
-export function PostsGrid() {
-  const [controls, setControls] = useState<ControlsState>({
-    query: "",
-    category: "All",
-    tag: "All",
-    sortBy: "Newest",
-  });
-
-  // Listener para cambios desde Controls (usamos un evento simple en window para mantener componentes desacoplados)
-  useEffect(() => {
-    function onControlsChange(e: any) {
-      setControls(e.detail as ControlsState);
-    }
-    window.addEventListener("blog-controls-change", onControlsChange);
-    return () => window.removeEventListener("blog-controls-change", onControlsChange);
-  }, []);
-
+export function PostsGrid({ controls }: { controls: ControlsState }) {
   const filtered = useMemo(() => {
     let list = POSTS.slice();
 
@@ -53,29 +37,22 @@ export function PostsGrid() {
     return list;
   }, [controls]);
 
-  // Paginación simple
+  // Simple pagination
   const pageSize = 9;
   const [page, setPage] = useState(1);
   useEffect(() => setPage(1), [controls]);
+
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const pageItems = filtered.slice((page - 1) * pageSize, page * pageSize);
 
   return (
     <section className="mx-auto max-w-6xl px-6 pb-12">
-      {/* Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {pageItems.map((post) => (
-          <PostCard key={post.slug} post={post} />
-        ))}
+        {pageItems.map((post) => <PostCard key={post.slug} post={post} />)}
       </div>
 
-      {/* Paginación */}
       <nav className="mt-6 flex items-center justify-center gap-1" aria-label="Blog pagination">
-        <button
-          className="btn-ghost text-sm"
-          onClick={() => setPage((p) => Math.max(1, p - 1))}
-          disabled={page <= 1}
-        >
+        <button className="btn-ghost text-sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1}>
           ← Prev
         </button>
         {Array.from({ length: totalPages }).map((_, i) => {
@@ -85,20 +62,18 @@ export function PostsGrid() {
             <button
               key={n}
               onClick={() => setPage(n)}
-              className={`px-3 py-1.5 rounded-lg border text-sm ${active
-                ? "bg-brand text-[var(--on-primary)] border-transparent"
-                : "border-soft bg-[color-mix(in_oklab,var(--background)_92%,transparent)] hover:bg-[color-mix(in_oklab,var(--background)_86%,transparent)]"}`}
+              className={`px-3 py-1.5 rounded-lg border text-sm ${
+                active
+                  ? "bg-brand text-[var(--on-primary)] border-transparent"
+                  : "border-soft bg-[color-mix(in_oklab,var(--background)_92%,transparent)] hover:bg-[color-mix(in_oklab,var(--background)_86%,transparent)]"
+              }`}
               aria-current={active ? "page" : undefined}
             >
               {n}
             </button>
           );
         })}
-        <button
-          className="btn-ghost text-sm"
-          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-          disabled={page >= totalPages}
-        >
+        <button className="btn-ghost text-sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page >= totalPages}>
           Next →
         </button>
       </nav>

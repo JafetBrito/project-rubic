@@ -1,131 +1,64 @@
-// src/app/about/sections/Hero.tsx
+// src/app/blog/sections/Hero.tsx
 "use client";
 
-import { Suspense, useRef } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import Container from "@/components/ui/container";
+import { ShieldCheck, Lock, Cpu } from "lucide-react";
 
-function useAnims() {
-  const reduce = useReducedMotion();
-  const fadeUp = {
-    hidden: { opacity: 0, y: reduce ? 0 : 14 },
-    visible: { opacity: 1, y: 0, transition: { duration: reduce ? 0 : 0.5 } },
-  };
-  return { fadeUp };
-}
+/* ==========================================================
+   BLOG — Hero (misma base visual que Projects)
+   - Hero limpio: título + párrafo centrados
+   - Fondo con grid sutil (reutiliza .projects-hero y .projects-hero__bg)
+   - Chips con métricas/atributos (cyberseguridad)
+   - Sin framer-motion ni threejs (evita errores de boundary)
+   ========================================================== */
 
-/* ====== 3D Waves ====== */
-function WavePlane() {
-  const meshRef = useRef<any>(null);
-
-  useFrame(({ clock }) => {
-    const mesh = meshRef.current;
-    if (!mesh) return;
-    const t = clock.getElapsedTime();
-    const pos = mesh.geometry.attributes.position;
-    const count = pos.count;
-
-    for (let i = 0; i < count; i++) {
-      const x = pos.getX(i);
-      const y = pos.getY(i);
-      const z =
-        Math.sin(x * 0.5 + t * 1.25) * 0.2 +
-        Math.cos(y * 0.45 + t * 1.05) * 0.16;
-      pos.setZ(i, z);
-    }
-    pos.needsUpdate = true;
-  });
-
+export default function Hero() {
   return (
-    <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.6, 0]}>
-      <planeGeometry args={[14, 10, 120, 100]} />
-      <meshStandardMaterial color="#22d3ee" wireframe transparent opacity={0.45} />
-    </mesh>
-  );
-}
+    <section className="relative overflow-hidden projects-hero">
+      {/* Fondo grid sutil — usa el mismo CSS que ya tienes para Projects */}
+      <div aria-hidden className="projects-hero__bg" />
 
-function WavesCanvas() {
-  return (
-    <div className="absolute inset-0 -z-20 pointer-events-none" aria-hidden>
-      <Canvas camera={{ position: [0, 2.6, 6], fov: 55 }} dpr={[1, 2]}>
-        <ambientLight intensity={0.7} />
-        <directionalLight position={[3, 5, 3]} intensity={1.2} />
-        <Suspense fallback={null}>
-          <WavePlane />
-        </Suspense>
-        <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-      </Canvas>
-    </div>
-  );
-}
+      <Container>
+        <div className="relative mx-auto max-w-4xl px-6 pt-20 pb-16 md:pt-28 md:pb-24 text-center">
+          <h1 className="h-display text-4xl md:text-6xl font-semibold tracking-tight">
+            Cybersecurity insights that perform
+          </h1>
 
-/* ====== Hero ====== */
-export function Hero() {
-  const { fadeUp } = useAnims();
+          <p
+            className="mt-4 text-base md:text-lg"
+            style={{
+              color: "color-mix(in oklab, var(--foreground) 72%, transparent)",
+            }}
+          >
+            Verified, pragmatic articles where security, privacy, and performance
+            translate into measurable resilience.
+          </p>
 
-  return (
-    <section className="relative overflow-hidden px-6 py-24 md:py-32 text-center">
-      <WavesCanvas />
+          {/* Chips */}
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            <div className="rounded-xl border border-soft bg-surface p-4">
+              <div className="flex items-center justify-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-brand" aria-hidden />
+                <span className="text-sm">Security-first</span>
+              </div>
+            </div>
 
-      {/* sutil glow, no bloquea */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-30"
-        style={{
-          background:
-            "radial-gradient(850px 340px at 50% -6%, color-mix(in oklab, var(--primary) 28%, transparent), transparent 60%)",
-        }}
-      />
+            <div className="rounded-xl border border-soft bg-surface p-4">
+              <div className="flex items-center justify-center gap-2">
+                <Lock className="w-5 h-5 text-brand" aria-hidden />
+                <span className="text-sm">Privacy by design</span>
+              </div>
+            </div>
 
-      <motion.div
-        className="mx-auto max-w-4xl relative flex flex-col items-center"
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Heading: forzamos negro en light y claro en dark */}
-        <h1
-          className="
-            relative inline-block
-            text-4xl md:text-6xl font-bold tracking-tight
-            !text-slate-900 dark:!text-slate-100
-            px-3 md:px-4 py-1.5 md:py-2 rounded-xl
-          "
-          // respaldo inline por si hay estilos globales que sobreescriben
-          style={{
-            color: "rgb(15,23,42)", // slate-900
-            background: "rgba(255,255,255,0.08)", // aún más sutil
-            backdropFilter: "blur(4px)",
-          }}
-        >
-          Building a <span className="text-brand">Safer</span> Digital World
-        </h1>
-
-        {/* Paragraph: igual, negro en light y claro en dark */}
-        <p
-          className="
-            mt-4 md:mt-5
-            inline-block
-            text-base md:text-xl
-            !text-slate-900 dark:!text-slate-200
-            px-3 md:px-4 py-2 rounded-xl
-            max-w-3xl
-          "
-          style={{
-            color: "rgb(15,23,42)", // slate-900 (light)
-            background: "rgba(255,255,255,0.06)", // aún más sutil
-            backdropFilter: "blur(3px)",
-          }}
-        >
-          At Rubic’s Digital Solutions, we combine software engineering,
-          cybersecurity, AI, and software architecture to deliver secure,
-          privacy-first, and high-performance digital experiences that scale
-          with your business.
-        </p>
-      </motion.div>
+            <div className="rounded-xl border border-soft bg-surface p-4">
+              <div className="flex items-center justify-center gap-2">
+                <Cpu className="w-5 h-5 text-brand" aria-hidden />
+                <span className="text-sm">Performance-aware</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
     </section>
   );
 }
-
-export default Hero;

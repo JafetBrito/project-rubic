@@ -17,6 +17,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  // Server Component ⇒ renderiza el Client Component sin problemas
   return <BlogContent />;
 }

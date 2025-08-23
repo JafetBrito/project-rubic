@@ -1,104 +1,165 @@
+"use client";
+
+import Image from "next/image";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Container from "@/components/ui/container";
 import Section from "@/components/ui/section";
-import ProjectCard, { Project } from "@/components/project-card";
-import { Gauge, Rocket, ShieldCheck } from "lucide-react";
 
-/* ==========================================================
-   Projects — Rubic Digital Solutions
-   - HERO limpio (sin efecto de letras, sin botones)
-   - Fondo con grid animada sutil
-   - Chips de métricas (performance / conversions / security)
-   - Grid de proyectos
-   ========================================================== */
+/* ===========================================================
+   Projects — Simple version with 1 category (Websites)
+   - Restored Hero
+   - Single section: "Websites"
+   - Cards with external links (target _blank)
+   - DEMO images (Unsplash) using `unoptimized`
+   =========================================================== */
 
-const PROJECTS: Project[] = [
+type Site = {
+  title: string;
+  url: string;
+  image: string;
+  summary: string;
+  tags?: string[];
+};
+
+const SITES: Site[] = [
   {
-    slug: "speed-boost-marketplace",
-    title: "Marketplace Performance Upgrade",
-    summary:
-      "App Router migration, CDN/image strategy and caching → +38% conversion.",
-    image: "/images/projects/meow1.jpg",
-    tags: ["Next.js", "Edge", "Image Opt", "SEO"],
+    title: "Modern E-commerce",
+    url: "https://example.com/ecommerce",
+    image:
+      "https://images.unsplash.com/photo-1519337265831-281ec6cc8514?q=80&w=1600&auto=format&fit=crop",
+    summary: "Catalog, optimized PDP and fast checkout.",
+    tags: ["Next.js", "Stripe"],
   },
   {
-    slug: "saas-landing-redesign",
-    title: "SaaS Landing Redesign",
-    summary: "New IA, clearer story and micro-UX → bounce −24%, trials +31%.",
-    image: "/images/projects/meow1.jpg",
-    tags: ["UX", "Tailwind", "CRO"],
+    title: "Minimal SaaS Landing",
+    url: "https://example.com/saas",
+    image:
+      "https://images.unsplash.com/photo-1526498460520-4c246339dccb?q=80&w=1600&auto=format&fit=crop",
+    summary: "Clear value proposition and social proof.",
+    tags: ["CRO", "SEO"],
   },
   {
-    slug: "local-business-seo",
-    title: "Local Business SEO",
-    summary: "Technical SEO + content structure → Top-3 for 7 core keywords.",
-    image: "/images/projects/meow1.jpg",
-    tags: ["SEO", "Schema", "Content"],
+    title: "Technical Blog (MDX)",
+    url: "https://example.com/blog",
+    image:
+      "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1600&auto=format&fit=crop",
+    summary: "Articles with code examples and dark mode.",
+    tags: ["MDX", "A11y"],
+  },
+  {
+    title: "Creative Portfolio",
+    url: "https://example.com/portfolio",
+    image:
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1600&auto=format&fit=crop",
+    summary: "Subtle animations and adaptive grid.",
+    tags: ["Framer Motion", "Tailwind"],
+  },
+  {
+    title: "Corporate Website",
+    url: "https://example.com/corporate",
+    image:
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1600&auto=format&fit=crop",
+    summary: "Classic sections with high readability.",
+    tags: ["Content AI", "Schema"],
+  },
+  {
+    title: "Campaign Microsite",
+    url: "https://example.com/campaign",
+    image:
+      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=1600&auto=format&fit=crop",
+    summary: "Tactical launch and lead capture page.",
+    tags: ["Leads", "Analytics"],
   },
 ];
+
+function ProjectsHero() {
+  return (
+    <section className="relative overflow-hidden projects-hero">
+      {/* Original background */}
+      <div aria-hidden className="projects-hero__bg" />
+      <Container>
+        <div className="relative mx-auto max-w-4xl px-6 pt-20 pb-16 md:pt-28 md:pb-24 text-center">
+          <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">
+            Projects that perform
+          </h1>
+          <p
+            className="mt-4 text-base md:text-lg"
+            style={{
+              color:
+                "color-mix(in oklab, var(--foreground) 72%, transparent)",
+            }}
+          >
+            Outcomes where speed, security, and design deliver measurable growth.
+          </p>
+        </div>
+      </Container>
+    </section>
+  );
+}
 
 export default function ProjectsPage() {
   return (
     <>
       <Navbar />
 
-      {/* ===== HERO limpio ===== */}
-      <section className="relative overflow-hidden projects-hero">
-        <div aria-hidden className="projects-hero__bg" />
+      {/* HERO */}
+      <ProjectsHero />
 
-        <Container>
-          <div className="relative mx-auto max-w-4xl px-6 pt-20 pb-16 md:pt-28 md:pb-24 text-center">
-            <h1 className="h-display text-4xl md:text-6xl font-semibold tracking-tight">
-              Projects that perform
-            </h1>
-
-            <p
-              className="mt-4 text-base md:text-lg"
-              style={{
-                color: "color-mix(in oklab, var(--foreground) 72%, transparent)",
-              }}
-            >
-              Outcomes where speed, security, and design deliver measurable growth.
-            </p>
-
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              <div className="rounded-xl border border-soft bg-surface p-4">
-                <div className="flex items-center justify-center gap-2">
-                  <Gauge className="w-5 h-5 text-brand" aria-hidden />
-                  <span className="text-sm">+30–60% CWV</span>
-                </div>
-              </div>
-              <div className="rounded-xl border border-soft bg-surface p-4">
-                <div className="flex items-center justify-center gap-2">
-                  <Rocket className="w-5 h-5 text-brand" aria-hidden />
-                  <span className="text-sm">+20–40% Conversions</span>
-                </div>
-              </div>
-              <div className="rounded-xl border border-soft bg-surface p-4">
-                <div className="flex items-center justify-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-brand" aria-hidden />
-                  <span className="text-sm">Security-first</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* ===== Grid de proyectos ===== */}
+      {/* Single category: Websites */}
       <Section>
         <Container>
           <header className="text-center md:text-left">
-            <h2 className="h3">Selected Work</h2>
-            <p className="mt-2 text-body text-gray-500 dark:text-gray-400">
-              Performance, UX and SEO—shipped with accountability.
+            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
+              Websites
+            </h2>
+            <p className="mt-2 text-gray-500 dark:text-gray-400">
+              Selection of sites; each card opens the project in a new tab.
             </p>
           </header>
 
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {PROJECTS.map((p) => (
-              <ProjectCard key={p.slug} project={p} />
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {SITES.map((site) => (
+              <a
+                key={site.url}
+                href={site.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-2xl border border-soft bg-surface overflow-hidden transition hover:shadow-lg"
+                title={site.title}
+              >
+                <div className="relative h-48 w-full md:h-56 lg:h-52">
+                  <Image
+                    src={site.image}
+                    alt={site.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    priority={false}
+                    unoptimized
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold tracking-tight line-clamp-1">
+                    {site.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+                    {site.summary}
+                  </p>
+                  {site.tags?.length ? (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {site.tags.map((t) => (
+                        <span
+                          key={t}
+                          className="text-xs rounded-md border border-soft px-2 py-1"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              </a>
             ))}
           </div>
         </Container>

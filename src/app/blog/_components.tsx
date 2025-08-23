@@ -25,20 +25,18 @@ export function PostCard({ post }: { post: Post }) {
             alt={post.coverAlt}
             width={1200}
             height={800}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
             loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
           />
         </div>
       </Link>
       <div className="p-4">
         <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
           <span className="inline-flex items-center gap-1">
-            <Calendar className="w-3.5 h-3.5" aria-hidden />
-            {formatDateUTC(post.date)}
+            <Calendar className="w-3.5 h-3.5" aria-hidden /> {formatDateUTC(post.date)}
           </span>
           <span className="inline-flex items-center gap-1">
-            <Tag className="w-3.5 h-3.5" aria-hidden />
-            {post.tags.slice(0, 3).join(", ")}
+            <Tag className="w-3.5 h-3.5" aria-hidden /> {post.tags.slice(0, 3).join(", ")}
           </span>
         </div>
         <h3 className="mt-2 font-semibold leading-snug">
@@ -53,16 +51,10 @@ export function PostCard({ post }: { post: Post }) {
             {post.category}
           </Link>
         </div>
-        {/* Tags clicables */}
         <div className="mt-3 flex flex-wrap gap-2">
           {post.tags.map((t) => (
-            <Link
-              key={t}
-              href={`/blog/tag/${encodeURIComponent(t)}`}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-soft text-xs"
-            >
-              <Tag className="w-3.5 h-3.5" />
-              {t}
+            <Link key={t} href={`/blog/tag/${encodeURIComponent(t)}`} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-soft text-xs">
+              <Tag className="w-3.5 h-3.5" /> {t}
             </Link>
           ))}
         </div>
