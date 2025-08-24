@@ -21,7 +21,6 @@ export default function ServicesPage() {
     <>
       <Navbar />
 
-
       {/* HERO with animated background you already have */}
 
       {/* Core services with examples */}

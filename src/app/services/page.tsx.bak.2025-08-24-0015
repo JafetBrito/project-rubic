@@ -1,8 +1,3 @@
-import Process from './components/Process';
-import FAQ from './components/FAQ';
-import EngagementModels from './components/EngagementModels';
-import MissionBar from './components/MissionBar';
-import ServiceGrid from './components/ServiceGrid';
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Container from "@/components/ui/container";
@@ -20,7 +15,6 @@ export default function ServicesPage() {
   return (
     <>
       <Navbar />
-
 
       {/* HERO with animated background you already have */}
 
