@@ -10,7 +10,9 @@ type Params = {
 export async function sendContactEmail({ to, from, replyTo, subject, text }: Params) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.log("[DEV simulate email]", { to, from, replyTo, subject, text });
+    if (process.env.NODE_ENV === "development") {
+      console.log("[DEV simulate email]", { to, from, replyTo, subject, text });
+    }
     return { ok: true, simulated: true };
   }
 
